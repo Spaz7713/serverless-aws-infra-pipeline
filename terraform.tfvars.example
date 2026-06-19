@@ -1,0 +1,7 @@
+# Example OpenTofu variables file
+# Copy this to terraform.tfvars or tofu.tfvars and customize for your environment
+
+aws_region       = "us-east-1"
+project_name     = "serverless-audit"
+environment      = "dev"
+cors_allow_origins = ["*"]

@@ -1,3 +1,98 @@
+<<<<<<< HEAD
+# AWS Infrastructure Compliance Audit
+
+Serverless audit pipeline that checks AWS resources against compliance rules. Runs on Lambda, triggered via API Gateway, provisions with OpenTofu.
+
+## What It Does
+
+- Scans IAM policies for wildcard permissions
+- Checks S3 buckets for encryption & public access
+- Finds overly permissive security groups
+- Returns results as JSON via REST API or CLI
+
+## Stack
+
+- **API**: API Gateway HTTP API
+- **Compute**: AWS Lambda (Python 3.11)
+- **IaC**: OpenTofu
+- **SDK**: boto3
+
+## Quick Start
+
+```bash
+# 1. Install deps
+pip install -r requirements.txt
+
+# 2. Create Lambda zip
+zip lambda_function.zip lambda_function.py
+
+# 3. Deploy
+tofu init
+tofu apply -var="environment=dev"
+
+# 4. Get URL
+tofu output audit_url
+```
+
+## Usage
+
+**Via API:**
+```bash
+curl https://<api-endpoint>/dev/audit
+
+# Specific audit types
+curl "https://<api-endpoint>/dev/audit?type=iam"
+curl "https://<api-endpoint>/dev/audit?type=s3"
+curl "https://<api-endpoint>/dev/audit?type=security_groups"
+```
+
+**Locally:**
+```bash
+python audit_api.py
+# Generates audit_report.json
+```
+
+## What Gets Checked
+
+**IAM** - Wildcard permissions, least privilege violations
+
+**S3** - Encryption enabled, public access blocked
+
+**Security Groups** - No 0.0.0.0/0 access
+
+## Output
+
+```json
+{
+  "timestamp": "2024-06-19T12:34:56.789123",
+  "total_resources_audited": 15,
+  "compliant_resources": 12,
+  "non_compliant_resources": 3,
+  "compliance_percentage": 80.0,
+  "audit_results": [...]
+}
+```
+
+## Customize
+
+```bash
+tofu apply -var="environment=prod" \
+           -var="aws_region=us-west-2" \
+           -var="project_name=my-audit"
+```
+
+## Teardown
+
+```bash
+tofu destroy --auto-approve
+```
+
+## Notes
+
+- Lambda role is read-only (least privilege)
+- Logs retained 7 days
+- 60s timeout, 512MB memory
+=======
 # Serverless Infrastructure Provisioning & Security Audit Pipeline
 
 End-to-end Cloud Platform Engineering pipeline w/ scalable, serverless microservice architecture deployed via Terraform
@@ -31,3 +126,4 @@ Trigger the compliance analyzer engine script:
 pip install boto3
 python audit_api.py
 ```
+>>>>>>> 0ce3117a029833e5eb06afe903f65fb229974602
